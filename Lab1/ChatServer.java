@@ -26,15 +26,15 @@ public class ChatServer {
         }try {
             while (true){
                 socket = server.accept();
-                System.out.println("Host Address: " + socket.getLocalAddress());
+                MultiThread multiThread = new MultiThread(socket);
+                multiThread.start();
 
                 in = new InputStreamReader(socket.getInputStream());
                 System.out.println("Start:");
                 while (in.ready()){
                     System.out.print((char)in.read());
                 }
-                MultiThread multiThread = new MultiThread(socket);
-                multiThread.start();
+
             }
         }catch (Exception e){
             System.out.println(e);
