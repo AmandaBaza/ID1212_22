@@ -7,7 +7,7 @@ public class ChatClient {
     public static void main(String[] args) throws IOException {
         int port = 8080;
         Socket socket;
-        String address ="localhost";
+        String address ="localhost"; //hej
         OutputStreamWriter out;
         try {
             socket = new Socket(address, port);
