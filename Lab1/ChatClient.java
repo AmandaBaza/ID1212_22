@@ -1,27 +1,32 @@
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.Socket;
 import java.net.ServerSocket;
+import java.util.Scanner;
 
 public class ChatClient {
     public static void main(String[] args) throws IOException {
         int port = 8080;
-        Socket socket;
-        String address ="localhost"; //hej
-        OutputStreamWriter out;
+        Socket socket = null;
+        String address ="localhost";
+        //OutputStreamWriter out = null;
         try {
             socket = new Socket(address, port);
-            out = new OutputStreamWriter(socket.getOutputStream());
 
-            out.write("fabled");
+            OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
+            DataInputStream in = new DataInputStream(System.in);
 
-            out.close();
+            while (true){
+                out.write(in.read());
+                out.flush();
+            }
 
-
-
-            socket.close();
+            //out.write("After");
+            //out.close();
+            //socket.close();
         }catch (Exception e){
-            System.out.println(e);
+            //if(out != null){ out.close(); }
+            if (socket != null) { socket.close(); }
+            System.out.println("Client disconnected");
         }
     }
 }

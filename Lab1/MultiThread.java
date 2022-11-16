@@ -26,7 +26,14 @@ public class MultiThread extends Thread{
         while (socket.isConnected()){
 
             try {
-
+                while (this.bufferedReader.ready()){
+                    String in = bufferedReader.readLine();
+                    System.out.println("MultiThread: " + in);
+                    /* //code not working
+                    this.bufferedWriter.write(in);
+                    this.bufferedWriter.flush();
+                     */
+                }
             }
             catch (Exception e) {
                 System.out.println(e);
@@ -42,5 +49,12 @@ public class MultiThread extends Thread{
             }
 
         }
+    }
+
+    public BufferedReader getBufferedReader() {
+        return this.bufferedReader;
+    }
+    public BufferedWriter getBufferedWriter() {
+        return this.bufferedWriter;
     }
 }
