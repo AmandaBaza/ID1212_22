@@ -1,6 +1,5 @@
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.Socket;
 import java.net.ServerSocket;
 
@@ -27,7 +26,7 @@ public class ChatServer {
         }try {
             while (true){
                 socket = server.accept();
-                MultiThread multiThread = new MultiThread(socket);
+                ClientHandler multiThread = new ClientHandler(socket);
                 multiThread.start();
 
                 System.out.println("New client connected!");

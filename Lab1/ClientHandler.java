@@ -2,14 +2,14 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class MultiThread extends Thread{
+public class ClientHandler extends Thread{
 
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
-    private static ArrayList <MultiThread> allClients = new ArrayList<>();
+    private static ArrayList <ClientHandler> allClients = new ArrayList<>();
 
-    public MultiThread (Socket socket){
+    public ClientHandler(Socket socket){
 
         try{
             this.socket = socket;
@@ -53,7 +53,7 @@ public class MultiThread extends Thread{
     private void broadcast(Socket sender, String message){
         if(!message.equals("")){
             try{
-                for (MultiThread client: allClients) {
+                for (ClientHandler client: allClients) {
                     if(!client.socket.equals(sender)){
                         client.bufferedWriter.write("Message received: "+ message);
                         client.bufferedWriter.newLine();
