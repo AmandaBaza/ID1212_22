@@ -7,7 +7,7 @@ public class ChatClient {
     public static void main(String[] args) throws IOException {
         int port = 8080;
         Socket socket = null;
-        String address ="localhost";
+        String address = "localhost";
         //OutputStreamWriter out = null;
         try {
             socket = new Socket(address, port);
@@ -15,7 +15,7 @@ public class ChatClient {
             OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
             DataInputStream in = new DataInputStream(System.in);
             BufferedReader receive = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
+            System.out.println("Connected!");
             try {
                 while (true){
                     if(receive.ready()){

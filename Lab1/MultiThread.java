@@ -51,16 +51,18 @@ public class MultiThread extends Thread{
     }
 
     private void broadcast(Socket sender, String message){
-        try{
-            for (MultiThread client: allClients) {
-                if(!client.socket.equals(sender)){
-                    client.bufferedWriter.write(message);
-                    client.bufferedWriter.newLine();
-                    client.bufferedWriter.flush();
+        if(!message.equals("")){
+            try{
+                for (MultiThread client: allClients) {
+                    if(!client.socket.equals(sender)){
+                        client.bufferedWriter.write("Message received: "+ message);
+                        client.bufferedWriter.newLine();
+                        client.bufferedWriter.flush();
+                    }
                 }
+            }catch(Exception e){
+                System.out.println("Error in when broadcasting messages");
             }
-        }catch(Exception e){
-            System.out.println("Error in when broadcasting messages");
         }
     }
 }
