@@ -37,7 +37,6 @@ public class MultiThread extends Thread{
                 }
             } catch (Exception e) {
                 System.out.println(e);
-                System.out.println("MThread1");
                 try {
                     socket.close();
                     bufferedWriter.close();
@@ -48,13 +47,11 @@ public class MultiThread extends Thread{
                     throw new RuntimeException(ex);
                 }
             }
-
         }
     }
 
     private void broadcast(Socket sender, String message){
         try{
-            System.out.println("test:" +message);
             for (MultiThread client: allClients) {
                 if(!client.socket.equals(sender)){
                     client.bufferedWriter.write(message);
@@ -63,7 +60,7 @@ public class MultiThread extends Thread{
                 }
             }
         }catch(Exception e){
-            System.out.println("MThread");
+            System.out.println("Error in when broadcasting messages");
         }
     }
 }

@@ -30,17 +30,11 @@ public class ChatServer {
                 MultiThread multiThread = new MultiThread(socket);
                 multiThread.start();
 
-                //in = new BufferedReader(multiThread.getBufferedReader());
-                System.out.println("New Client connected!");
-                //while (in.ready()){
-                    //System.out.print("Client: ");
-                    //System.out.println(in.readLine());
-                //}
-
+                System.out.println("New client connected!");
             }
         }catch (Exception e){
             System.out.println(e);
-            System.out.println("Server");
+            System.out.println("Error from Server");
         }
     }
 }
