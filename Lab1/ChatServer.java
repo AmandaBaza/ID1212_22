@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 import java.net.ServerSocket;
-import java.io.InputStreamReader;
 
 public class ChatServer {
     public static void main(String[]args){
@@ -31,16 +30,17 @@ public class ChatServer {
                 MultiThread multiThread = new MultiThread(socket);
                 multiThread.start();
 
-                in = new BufferedReader(multiThread.getBufferedReader());
+                //in = new BufferedReader(multiThread.getBufferedReader());
                 System.out.println("New Client connected!");
-                while (in.ready()){
-                    System.out.print("Client: ");
-                    System.out.println(in.readLine());
-                }
+                //while (in.ready()){
+                    //System.out.print("Client: ");
+                    //System.out.println(in.readLine());
+                //}
 
             }
         }catch (Exception e){
             System.out.println(e);
+            System.out.println("Server");
         }
     }
 }

@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class ChatClient {
     public static void main(String[] args) throws IOException {
-        int port = 8080;
+        int port = 8000;
         Socket socket = null;
         String address ="localhost";
         //OutputStreamWriter out = null;
@@ -14,19 +14,26 @@ public class ChatClient {
 
             OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
             DataInputStream in = new DataInputStream(System.in);
+            BufferedReader receive = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            while (true){
-                out.write(in.read());
-                out.flush();
+            try {
+                while (true){
+                    out.write(in.read());
+                    out.flush();
+                    while(receive.ready()){
+                        System.out.println(receive.readLine());
+                    }
+                }
+            }catch(Exception e){
+                System.out.println("Lost Connection");
             }
 
-            //out.write("After");
-            //out.close();
-            //socket.close();
+            out.close();
+            socket.close();
         }catch (Exception e){
             //if(out != null){ out.close(); }
             if (socket != null) { socket.close(); }
-            System.out.println("Client disconnected");
+            System.out.println("Couldn't Connect");
         }
     }
 }

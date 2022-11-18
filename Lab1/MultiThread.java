@@ -1,11 +1,13 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class MultiThread extends Thread{
 
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
+    private static ArrayList <MultiThread> allClients = new ArrayList<>();
 
     public MultiThread (Socket socket){
 
@@ -13,9 +15,11 @@ public class MultiThread extends Thread{
             this.socket = socket;
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-
+            allClients.add(this);
         } catch (Exception e) {
+            System.out.println("MThread-K");
             throw new RuntimeException(e);
+
         }
 
     }
@@ -27,16 +31,13 @@ public class MultiThread extends Thread{
 
             try {
                 while (this.bufferedReader.ready()){
-                    String in = bufferedReader.readLine();
-                    System.out.println("MultiThread: " + in);
-                    /* //code not working
-                    this.bufferedWriter.write(in);
-                    this.bufferedWriter.flush();
-                     */
+                    String in = this.bufferedReader.readLine();
+                    System.out.println("Message received: " + in);
+                    broadcast(this.socket, in);
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println(e);
+                System.out.println("MThread1");
                 try {
                     socket.close();
                     bufferedWriter.close();
@@ -51,10 +52,18 @@ public class MultiThread extends Thread{
         }
     }
 
-    public BufferedReader getBufferedReader() {
-        return this.bufferedReader;
-    }
-    public BufferedWriter getBufferedWriter() {
-        return this.bufferedWriter;
+    private void broadcast(Socket sender, String message){
+        try{
+            System.out.println("test:" +message);
+            for (MultiThread client: allClients) {
+                if(!client.socket.equals(sender)){
+                    client.bufferedWriter.write(message);
+                    client.bufferedWriter.newLine();
+                    client.bufferedWriter.flush();
+                }
+            }
+        }catch(Exception e){
+            System.out.println("MThread");
+        }
     }
 }
