@@ -10,14 +10,26 @@ public class ChatClient {
         String address ="localhost";
         //OutputStreamWriter out = null;
         try {
+
             socket = new Socket(address, port);
 
-            OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
-            DataInputStream in = new DataInputStream(System.in);
+            PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            Scanner in = new Scanner(System.in);
+            String input;
+
+
+
+            //OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
+            //DataInputStream in = new DataInputStream(System.in);
+
 
             while (true){
-                out.write(in.read());
-                out.flush();
+                input = in.nextLine();
+                System.out.println("Hej");
+                printWriter.println(input);
+                /*out.write(in.read());
+                out.flush();*/
             }
 
             //out.write("After");
