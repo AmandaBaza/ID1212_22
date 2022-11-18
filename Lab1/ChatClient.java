@@ -26,7 +26,6 @@ public class ChatClient {
 
             while (true){
                 input = in.nextLine();
-                System.out.println("Hej");
                 printWriter.println(input);
                 /*out.write(in.read());
                 out.flush();*/

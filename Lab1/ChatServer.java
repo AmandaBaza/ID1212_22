@@ -29,6 +29,7 @@ public class ChatServer {
             while (true){
                 socket = server.accept();
                 MultiThread multiThread = new MultiThread(socket);
+                System.out.println(multiThread);
                 multiThread.start();
 
                 in = new BufferedReader(multiThread.getBufferedReader());
