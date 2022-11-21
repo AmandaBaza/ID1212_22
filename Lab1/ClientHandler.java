@@ -51,9 +51,11 @@ public class ClientHandler extends Thread{
     }
 
     private void broadcast(Socket sender, String message){
+        ClientHandler c = null;
         if(!message.equals("")){
             try{
                 for (ClientHandler client: allClients) {
+                    c = client;
                     if(!client.socket.equals(sender)){
                         client.bufferedWriter.write("Message received: "+ message);
                         client.bufferedWriter.newLine();
@@ -61,7 +63,8 @@ public class ClientHandler extends Thread{
                     }
                 }
             }catch(Exception e){
-                System.out.println("Error in when broadcasting messages");
+                System.out.println("Error when broadcasting messages to a client, removing unreachable client.");
+                allClients.remove(c);
             }
         }
     }
