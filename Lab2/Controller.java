@@ -26,8 +26,8 @@ public class Controller {
                         System.out.println(data);
                     //}
                     data = request.readLine();
+                    View.response(gameSession, player);
                 }
-
             }
         } catch (IOException e) {
             e.printStackTrace();

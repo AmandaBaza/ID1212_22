@@ -27,16 +27,19 @@ public class View {
             body = getBody("Nope, lower!");
         }
         try {
+            StringBuilder responseString = new StringBuilder();
             PrintStream response = new PrintStream(socket.getOutputStream());
 
-            response.println("HTTP/1.1 200 OK");
-            response.println("Content-Type: text/html");
-            response.println("<link rel=\"icon\" href=\"data:\" />"); //should ignore/fake favicon
-            response.println("Content-Length: ");
-            response.println("\r\n");       //empty line TODO-change to print? Extra line?
-            response.println(body);         //message
+            responseString.append("HTTP/1.1 200 OK\n");
+            responseString.append("Content-Type: text/html\n");
+            //responseString.append("<link rel=\"icon\" href=\"data:\" />\n"); //should ignore/fake favicon
+            responseString.append("Content-Length: ");
+            responseString.append(body.length());    //empty line TODO-change to print? Extra line?
+            responseString.append(body);         //message
+            System.out.println(responseString.toString());
+            response.print(responseString.toString());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("ERROR: "+ e.getMessage());
         }
     }
 
