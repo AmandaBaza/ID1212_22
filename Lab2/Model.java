@@ -1,7 +1,9 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.Random;
 
-public class Model {
+public class Model /*implements Runnable*/ {
     private Socket socket;
     int numberOfGuesses;
     boolean guessHigher;
@@ -18,6 +20,7 @@ public class Model {
     }
 
     public void newGuess (int guess){
+        System.out.println("correct: " + correctNumber + " guess: " + guess);
         //update number of guesses
         this.numberOfGuesses++;
         //check if its a win
@@ -32,8 +35,22 @@ public class Model {
         }
         //set cookie?
 
+       /*try {
+            System.out.println(new BufferedReader(new InputStreamReader(socket.getInputStream())).readLine());
+        } catch (Exception e) {
+            System.out.println("Here: " + e);
+        }*/
+
         //call View -TODO swap new socket() with the players sockets
-        View.response(this, new Socket());
+        View.response(this, socket);
     }
 
+    /*@Override
+    public void run() {
+        try {
+
+        } catch (Exception e){
+            System.out.println(e);
+        }
+    }*/
 }
