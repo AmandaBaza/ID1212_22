@@ -74,14 +74,13 @@ public class Controller {
         }  else if (data.contains("GET /favicon.ico HTTP/1.1"))
         {
             System.out.println("Another request for probably favicon is done!");
+            System.out.println("--------------------------");
             System.out.println(data);
-            System.out.println("----------");
+            System.out.println("--------------------------");
             /////////////View.fav response
 
         } else if(data.contains("GET")) {
             System.out.println("Made it to Controller! ... ");
-            System.out.println(data);
-            System.out.println("----------");
             gameSession.newGuess(null);
         }
     }

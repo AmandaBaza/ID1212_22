@@ -46,7 +46,7 @@ public class View {
     }
 
     private static String getBody(String title){
-        String block = "<link rel=\"icon\" href=\"data:;base64,=\">";
+        String block = "<link rel=\"shortcut icon\" href=\"about:blank\">";
         String body = "\r\n\r\n<html><head>"+block+"</head><body><h1>"    //with empty line
                 //+ "<link rel=\"icon\" href=\"data:,\">"
                 + "<h1>" + title + "</h1>"
