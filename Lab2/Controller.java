@@ -13,7 +13,8 @@ public class Controller {
 
             while (true){
                 Socket player = server.accept();
-                Model gameSession = new Model(player); //cookie?
+                //Add Threading for each player
+                Model gameSession = new Model(player); //cookie? TODO -Add in thread
                 //Integer guess = null;
                 //gameSession.start();
 
@@ -70,9 +71,17 @@ public class Controller {
     public static void handleInput(String data, Model gameSession){
         if(data.contains(("GET /?guess="))){
             gameSession.newGuess(getGuess(data));
-        }
-        else if(data.contains("GET")){
-            System.out.println("Made it to Controller!");
+        }  else if (data.contains("GET /favicon.ico HTTP/1.1"))
+        {
+            System.out.println("Another request for probably favicon is done!");
+            System.out.println(data);
+            System.out.println("----------");
+            /////////////View.fav response
+
+        } else if(data.contains("GET")) {
+            System.out.println("Made it to Controller! ... ");
+            System.out.println(data);
+            System.out.println("----------");
             gameSession.newGuess(null);
         }
     }

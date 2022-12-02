@@ -33,10 +33,10 @@ public class View {
             PrintStream response = new PrintStream(socket.getOutputStream());
 
             responseString.append("HTTP/1.1 200 OK\n");
-            responseString.append("Content-Type: text/html\n");
+            responseString.append("Content-Type: text/html; charset=utf-8");
             //responseString.append("<link rel=\"icon\" href=\"data:\" />\n"); //should ignore/fake favicon
-            responseString.append("Content-Length: ");
-            responseString.append(body.length());    //empty line TODO-change to print? Extra line?
+            //responseString.append("Content-Length: ");
+            //responseString.append(body.length());
             responseString.append(body);         //message
             System.out.println(responseString);
             response.print(responseString);
@@ -46,15 +46,15 @@ public class View {
     }
 
     private static String getBody(String title){
-        String body = "\r\n\r\n<html><body><h1>"
-                + "<link rel=\"icon\" href=\"data:,\">"
+        String block = "<link rel=\"icon\" href=\"data:;base64,=\">";
+        String body = "\r\n\r\n<html><head>"+block+"</head><body><h1>"    //with empty line
+                //+ "<link rel=\"icon\" href=\"data:,\">"
                 + "<h1>" + title + "</h1>"
                 + "<form name=\"guessForm\">"
                 + "<input type=\"text\" name=\"guess\"><br>"
                 + "<input type=\"submit\" value=\"guessedValue\"><br>"
                 + "</form>"
-                + "<p>Http</p>"
-                + "</body></html>\r\n\r\n";
+                + "</body></html>";
         return body;
     }
 }
