@@ -19,30 +19,32 @@ public class Model /*implements Runnable*/ {
         this.correctNumber = rand.nextInt(100); //Get Random number between 0-100
     }
 
-    public void newGuess (int guess){
-        System.out.println("correct: " + correctNumber + " guess: " + guess);
-        //update number of guesses
-        this.numberOfGuesses++;
-        //check if its a win
-        if (guess == this.correctNumber){
-            this.win = true;
-        }//else if it's a higher number
-        else if (guess < this.correctNumber){
-            this.guessHigher = true;
-        }//else guessHigher = false;
-        else{
-            this.guessHigher = false;
+    public void newGuess (Integer guess){
+        if (guess == null){
+            System.out.println("Made it to Model!");
+            View.response(this, socket);
         }
-        //set cookie?
+        else {
+            //set cookie?
+            System.out.println("correct: " + correctNumber + " guess: " + guess);
 
-       /*try {
-            System.out.println(new BufferedReader(new InputStreamReader(socket.getInputStream())).readLine());
-        } catch (Exception e) {
-            System.out.println("Here: " + e);
-        }*/
+            //update number of guesses
+            this.numberOfGuesses++;
 
-        //call View -TODO swap new socket() with the players sockets
-        View.response(this, socket);
+            //check if its a win
+            if (guess == this.correctNumber) {
+                this.win = true;
+            }//else if it's a higher number
+            else if (guess < this.correctNumber) {
+                this.guessHigher = true;
+            }//else guessHigher = false;
+            else {
+                this.guessHigher = false;
+            }
+
+            //call View -TODO swap new socket() with the players sockets
+            View.response(this, socket);
+        }
     }
 
     /*@Override

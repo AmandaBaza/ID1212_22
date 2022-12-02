@@ -17,7 +17,9 @@ public class View {
     }
     public static void response(Model player, Socket socket) {
         String body = "";
+        System.out.println("Made it to View!");
         if(player.numberOfGuesses == 0){
+            System.out.println("Made it to View for new game!");
             body = getBody("Welcome to the Number Guess Game. Guess a number between 1 and 100!");
         } else if(player.win){
             body = getBody("You win!");
@@ -36,8 +38,8 @@ public class View {
             responseString.append("Content-Length: ");
             responseString.append(body.length());    //empty line TODO-change to print? Extra line?
             responseString.append(body);         //message
-            System.out.println(responseString.toString());
-            response.print(responseString.toString());
+            System.out.println(responseString);
+            response.print(responseString);
         } catch (Exception e) {
             System.out.println("ERROR: "+ e.getMessage());
         }
@@ -51,6 +53,7 @@ public class View {
                 + "<input type=\"text\" name=\"guess\"><br>"
                 + "<input type=\"submit\" value=\"guessedValue\"><br>"
                 + "</form>"
+                + "<p>Http</p>"
                 + "</body></html>\r\n\r\n";
         return body;
     }
