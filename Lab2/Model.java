@@ -2,38 +2,40 @@ import java.net.Socket;
 import java.util.Random;
 
 public class Model {
-    private Socket socket;
+    String cookie;
+    Socket socket;
     int numberOfGuesses;
     boolean guessHigher;
     boolean win;
     private int correctNumber;
-    Random rand = new Random();
 
-    Model(Socket playerSocket){
+    Model(Socket playerSocket, Integer cookie){
         this.socket = playerSocket;
+        this.cookie = cookie.toString();
         this.numberOfGuesses = 0;
         this.guessHigher = false;
         this.win = false;
+        System.out.println("NEW MODEL!!");
+        Random rand = new Random();
         this.correctNumber = rand.nextInt(100); //Get Random number between 0-100
     }
 
-    public void newGuess (int guess){
+    public void newGuess (Integer guess){
         //update number of guesses
         this.numberOfGuesses++;
+        System.out.println(numberOfGuesses);
+
         //check if its a win
-        if (guess == this.correctNumber){
+        if (guess == this.correctNumber) {
             this.win = true;
         }//else if it's a higher number
-        else if (guess < this.correctNumber){
+        else if (guess < this.correctNumber) {
             this.guessHigher = true;
         }//else guessHigher = false;
-        else{
+        else {
             this.guessHigher = false;
         }
-        //set cookie?
 
-        //call View -TODO swap new socket() with the players sockets
-        View.response(this, new Socket());
+        View.response(this, socket);
     }
-
 }

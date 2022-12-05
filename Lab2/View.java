@@ -20,24 +20,35 @@ public class View {
         if(player.numberOfGuesses == 0){
             body = getBody("Welcome to the Number Guess Game. Guess a number between 1 and 100!");
         } else if(player.win){
+            System.out.println("Made it to View for Win!");
             body = getBody("You win!");
         } else if(player.guessHigher){
+            System.out.println("Made it to View higher!");
             body = getBody("Nope, higher!");
         }else{
+            System.out.println("Made it to View for lower!");
             body = getBody("Nope, lower!");
         }
         try {
             StringBuilder responseString = new StringBuilder();
+            System.out.println("TRY GET STREAM");
             PrintStream response = new PrintStream(socket.getOutputStream());
-
+            System.out.println("GOT STREAM");
             responseString.append("HTTP/1.1 200 OK\n");
-            responseString.append("Content-Type: text/html\n");
+            responseString.append("Content-Type: text/html; charset=utf-8\n");
+            responseString.append("Set-Cookie: ");
+            responseString.append(player.cookie);
+
             //responseString.append("<link rel=\"icon\" href=\"data:\" />\n"); //should ignore/fake favicon
             responseString.append("Content-Length: ");
             responseString.append(body.length());    //empty line TODO-change to print? Extra line?
             responseString.append(body);         //message
-            System.out.println(responseString.toString());
-            response.print(responseString.toString());
+
+            System.out.println(responseString);
+            response.print(responseString);
+            //close socket
+            socket.close();
+
         } catch (Exception e) {
             System.out.println("ERROR: "+ e.getMessage());
         }
