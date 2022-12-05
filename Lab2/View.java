@@ -15,7 +15,7 @@ public class View {
             System.out.println(e.getMessage());
         }
     }
-    public static void response(Model player, Socket socket) {
+    public static void response(Model player) {
         String body = "";
         if(player.numberOfGuesses == 0){
             body = getBody("Welcome to the Number Guess Game. Guess a number between 1 and 100!");
@@ -32,22 +32,19 @@ public class View {
         try {
             StringBuilder responseString = new StringBuilder();
             System.out.println("TRY GET STREAM");
-            PrintStream response = new PrintStream(socket.getOutputStream());
+            PrintStream response = new PrintStream(player.socket.getOutputStream());
             System.out.println("GOT STREAM");
             responseString.append("HTTP/1.1 200 OK\n");
             responseString.append("Content-Type: text/html; charset=utf-8\n");
             responseString.append("Set-Cookie: ");
             responseString.append(player.cookie);
 
-            //responseString.append("<link rel=\"icon\" href=\"data:\" />\n"); //should ignore/fake favicon
-            responseString.append("Content-Length: ");
-            responseString.append(body.length());    //empty line TODO-change to print? Extra line?
             responseString.append(body);         //message
 
             System.out.println(responseString);
             response.print(responseString);
             //close socket
-            socket.close();
+            player.socket.close();
 
         } catch (Exception e) {
             System.out.println("ERROR: "+ e.getMessage());
@@ -55,7 +52,8 @@ public class View {
     }
 
     private static String getBody(String title){
-        String body = "\r\n\r\n<html><body><h1>"
+        String block = "<link rel=\"shortcut icon\" href=\"about:blank\">";
+        String body = "\r\n\r\n<html><head>"+block+"</head><body><h1>"
                 + "<link rel=\"icon\" href=\"data:,\">"
                 + "<h1>" + title + "</h1>"
                 + "<form name=\"guessForm\">"

@@ -80,7 +80,7 @@ public class Controller implements Runnable{
 
         } else if(data.contains("GET")) {
             System.out.println("Made it to Controller! ... ");
-            gameSession.newGuess(0);
+            gameSession.newGuess(null);
         }
     }
 

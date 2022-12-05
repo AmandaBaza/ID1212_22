@@ -21,21 +21,22 @@ public class Model {
     }
 
     public void newGuess (Integer guess){
-        //update number of guesses
-        this.numberOfGuesses++;
-        System.out.println(numberOfGuesses);
-
-        //check if its a win
-        if (guess == this.correctNumber) {
-            this.win = true;
-        }//else if it's a higher number
-        else if (guess < this.correctNumber) {
-            this.guessHigher = true;
-        }//else guessHigher = false;
-        else {
-            this.guessHigher = false;
+        System.out.println("Correct:" + this.correctNumber);
+        //update number of guesses if a guess was made
+        if(guess != null){
+            this.numberOfGuesses++;
+            System.out.println(numberOfGuesses);
+            //check if its a win
+            if (guess == this.correctNumber) {
+                this.win = true;
+            }//else if it's a higher number
+            else if (guess < this.correctNumber) {
+                this.guessHigher = true;
+            }//else guessHigher = false;
+            else {
+                this.guessHigher = false;
+            }
         }
-
-        View.response(this, socket);
+        View.response(this);
     }
 }
