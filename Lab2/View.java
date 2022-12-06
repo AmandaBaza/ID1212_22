@@ -5,8 +5,6 @@ import java.net.Socket;
 public class View {
     Socket player;
     OutputStream outputStream;
-    //int length = 0;
-    //String ContentLength = "Content-Length: "+length+"\r\n";
     public View (Socket player) {
         try {
             this.player = player;

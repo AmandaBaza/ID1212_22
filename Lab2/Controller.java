@@ -13,7 +13,7 @@ public class Controller implements Runnable{
     }
 
     public static void main(String[] args) {
-        int port = 8000;
+        int port = 8080;
         ServerSocket server;
 
         try {
