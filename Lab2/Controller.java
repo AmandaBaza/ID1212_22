@@ -21,30 +21,11 @@ public class Controller implements Runnable{
             while (true){
 
                 Socket socket = server.accept();
-                //setCookie();
-                System.out.println("New connection!");
 
                 Runnable runnable =  new Controller(socket);
                 Thread thread = new Thread(runnable);
                 thread.start();
-/**
- * Socket player = server.accept();
- *                 Model gameSession = new Model(player); //cookie?
- *                 //gameSession.start();
- *
- *                 System.out.println("New player connected!");
- *
- *                 BufferedReader request = new BufferedReader(new InputStreamReader(player.getInputStream()));
- *
- *                 String data = request.readLine();
- *                 while (data != null){
- *                     //if (data.contains()){
- *                         System.out.println(data);
- *                     //}
- *                     data = request.readLine();
- *                     View.response(gameSession, player);
- *                 }
- */
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -55,15 +36,11 @@ public class Controller implements Runnable{
         String[] split = data.split("\\s");
         String guess = "";
 
-        //if (split[0].equals("GET")) {
-            for (int i = 0; i < split[1].length(); i++) {
-
-                if (Character.isDigit(split[1].charAt(i))) {
-                    guess += split[1].charAt(i);
-                }
-            //}
+        for (int i = 0; i < split[1].length(); i++) {
+            if (Character.isDigit(split[1].charAt(i))) {
+                guess += split[1].charAt(i);
+            }
         }
-            System.out.println(guess);
         return Integer.parseInt(guess);
     }
 
@@ -72,14 +49,8 @@ public class Controller implements Runnable{
             gameSession.newGuess(getGuess(data));
         }  else if (data.contains("GET /favicon.ico HTTP/1.1"))
         {
-            System.out.println("Another request for probably favicon is done!");
-            System.out.println("--------------------------");
-            System.out.println(data);
-            System.out.println("--------------------------");
-            // Fix View.favicon response
 
         } else if(data.contains("GET")) {
-            System.out.println("Made it to Controller! ... ");
             gameSession.newGuess(null);
         }
     }
@@ -99,31 +70,21 @@ public class Controller implements Runnable{
                 if(data.contains("Cookie")){
                     String[] holder = data.split(" ");
                     cookie = holder[1];
-                    System.out.println("----------COOKIE"+cookie+"------------");
                 }
                 dataSB.append(data).append("\n");
                 data = request.readLine();
             }
             data = dataSB.toString();
-            System.out.println("----------------------");
-            System.out.println(data);
-            System.out.println("----------------------");
             if (!cookie.equals("")){
-                System.out.println("COOKIE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 for (Model session: allPlayers) {
-                    System.out.println("Player: "+session.cookie+"--------------");
                     if(cookie.equals(session.cookie)){
-                        System.out.println("Found !!");
                         session.socket = player;
                         handleInput(data, session);
-                        //break;
                     }
                 }
             }else {
                 Model gameSession = new Model(this.player, cookieId);
                 cookieId++;
-                System.out.println(cookieId+" NO COOKIE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                System.out.println("New Model instans made!!!!!!!!!!!!!!!!!!!!!!");
                 allPlayers.add(gameSession);
                 for (Model se: allPlayers  ) {
                     System.out.println("Loop: "+ se.cookie);

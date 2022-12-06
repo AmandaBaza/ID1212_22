@@ -15,7 +15,6 @@ public class Model {
         this.numberOfGuesses = 0;
         this.guessHigher = false;
         this.win = false;
-        System.out.println("NEW MODEL!!");
         Random rand = new Random();
         this.correctNumber = rand.nextInt(100); //Get Random number between 0-100
     }
@@ -29,10 +28,10 @@ public class Model {
             //check if its a win
             if (guess == this.correctNumber) {
                 this.win = true;
-            }//else if it's a higher number
+            }//if it's a higher number
             else if (guess < this.correctNumber) {
                 this.guessHigher = true;
-            }//else guessHigher = false;
+            }//else it's a lower number
             else {
                 this.guessHigher = false;
             }

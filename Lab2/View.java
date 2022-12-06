@@ -29,9 +29,7 @@ public class View {
         }
         try {
             StringBuilder responseString = new StringBuilder();
-            System.out.println("TRY GET STREAM");
             PrintStream response = new PrintStream(player.socket.getOutputStream());
-            System.out.println("GOT STREAM");
             responseString.append("HTTP/1.1 200 OK\n");
             responseString.append("Content-Type: text/html; charset=utf-8\n");
             responseString.append("Set-Cookie: ");
@@ -39,7 +37,6 @@ public class View {
 
             responseString.append(body);         //message
 
-            System.out.println(responseString);
             response.print(responseString);
             //close socket
             player.socket.close();
