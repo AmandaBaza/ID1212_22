@@ -31,13 +31,30 @@ public class SSLReceive {
         String password = String.valueOf(System.console().readPassword());
 
         //Login
-        outputStreamWriter.write("a001 LOGIN " //a001 is the LOGIN tag
+        outputStreamWriter.write("a001 LOGIN " //a001 is the tag
                 + username + " " + password);
         outputStreamWriter.write("\r\n");
         outputStreamWriter.flush();
         //String reply = readAll();
 
         readUntilTag(in, "a001");
+
+        System.out.println("Select inbox to read from: ");
+        String inbox = System.console().readLine();
+
+        outputStreamWriter.write("a002 EXAMINE "
+                + inbox);
+        outputStreamWriter.write("\r\n");
+        outputStreamWriter.flush();
+
+        readUntilTag(in, "a002");
+        System.out.println("*** Now to fetch it... ***");
+
+        outputStreamWriter.write("a003 FETCH 1 BODY[text]");
+        outputStreamWriter.write("\r\n");
+        outputStreamWriter.flush();
+
+        readUntilTag(in, "a003");
 
         //KeyStore ks = null;
         //ks = KeyStore.getInstance(protocol);
