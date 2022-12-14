@@ -7,44 +7,59 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 
-public class SSLServer {
+public class SSLReceive {
     //börjar med krypterad session TODO make try catch
     public static void main(String[] args) throws KeyStoreException, NoSuchAlgorithmException, IOException {
         int port = 993;
         String server = "webmail.kth.se";
         String protocol = "SSL";
-        String username = "abaz";
 
+        System.out.println("Enter KTH username: ");
+        String username = System.console().readLine();
 
         //create Socket
         SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
         SSLSocket socket = (SSLSocket) factory.createSocket(server, port);
 
-        //connect
+        //output and input streams
         Writer outputStreamWriter = new OutputStreamWriter(socket.getOutputStream(),
                 "US-ASCII");
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
         //To read password
+        System.out.println("Write your password: ");
         String password = String.valueOf(System.console().readPassword());
 
         //Login
-        outputStreamWriter.write("a001 LOGIN "+username+" " + password); //TODO
-        //outputStreamWriter.write();
+        outputStreamWriter.write("a001 LOGIN " //a001 is the LOGIN tag
+                + username + " " + password);
+        outputStreamWriter.write("\r\n");
         outputStreamWriter.flush();
+        //String reply = readAll();
 
-        KeyStore ks = null;
-        ks = KeyStore.getInstance(protocol);
+        readUntilTag(in, "a001");
+
+        //KeyStore ks = null;
+        //ks = KeyStore.getInstance(protocol);
         //InputStream in = null;
         //in = new FileInputStream(new File());
-
-
-
         //ks.load();
+        //SSLContext ctx = SSLContext.getInstance("TLS");
 
-        SSLContext ctx = SSLContext.getInstance("TLS");
+    }
 
-
-
+    /*
+        Read lines until a received line starts with the same tag
+        that was used to tag the LOGIN command with.
+    */
+    private static void readUntilTag(BufferedReader bufferedReader, String tag) throws IOException {
+        String line = bufferedReader.readLine();
+        while(line != null){
+            System.out.println(line);
+            if(line.contains(tag)){
+                break;
+            }
+            line = bufferedReader.readLine();
+        }
     }
 }
