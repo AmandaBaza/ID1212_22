@@ -26,13 +26,11 @@ public class SSLClient {
         System.out.println("Write your password: ");
         String password = String.valueOf(System.console().readPassword());
 
-       /*
         //Login
         outputStreamWriter.write("a001 LOGIN " //a001 is the tag
                 + username + " " + password);
         outputStreamWriter.write("\r\n");
         outputStreamWriter.flush();
-        */
 
         //En session betsår utav:
         //val av assymmetrisk nyckel
