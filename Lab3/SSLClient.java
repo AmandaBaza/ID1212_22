@@ -9,7 +9,9 @@ public class SSLClient {
         int port = 587;
         String server = "smtp.kth.se";
         String protocol = "STARTTLC";
-        String name = "";
+
+        System.out.println("Enter KTH username: ");
+        String username = System.console().readLine();
 
         //create Socket
         SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
@@ -20,25 +22,17 @@ public class SSLClient {
                 "US-ASCII");
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
+        //To read password
+        System.out.println("Write your password: ");
+        String password = String.valueOf(System.console().readPassword());
+
+       /*
         //Login
-        outputStreamWriter.write("a001 LOGIN"); //TODO
-        //outputStreamWriter.write(username);
+        outputStreamWriter.write("a001 LOGIN " //a001 is the tag
+                + username + " " + password);
+        outputStreamWriter.write("\r\n");
         outputStreamWriter.flush();
-
-
-
-        //To read password - Ta bort?
-        char[] password = System.console().readPassword();
-
-        Writer out = new OutputStreamWriter(socket.getOutputStream(),
-                "US-ASCII");
-        out.write("Name: "+ name +"\r\n");
-        out.write("Product-ID: 67X-89\r\n");
-        out.write("Address: 1280 Deniston Blvd, NY NY 10003\r\n");
-        out.write("Card number: 4000-1234-5678-9017\r\n");
-        out.write("Expires: 08/05\r\n");
-        out.flush();
-
+        */
 
         //En session betsår utav:
         //val av assymmetrisk nyckel
