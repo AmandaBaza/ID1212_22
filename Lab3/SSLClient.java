@@ -74,10 +74,10 @@ public class SSLClient {
                 makeRequests("MAIL FROM:" + "<" + username + "@kth.se>", sslOutputStreamWriter, sslIn);
                 makeRequests("RCPT TO:" + "<" + receiver + ">", sslOutputStreamWriter, sslIn);
                 makeRequests("DATA", sslOutputStreamWriter, sslIn);
-                writeMessage("Date: " + LocalTime.now(), sslOutputStreamWriter);
                 writeMessage("From: " + "<" + username + "@kth.se>", sslOutputStreamWriter);
                 writeMessage("Subject: Testytime", sslOutputStreamWriter);
                 writeMessage("To: " + receiver, sslOutputStreamWriter);
+                writeMessage("Email testing time!", sslOutputStreamWriter);
                 writeMessage("Email testing time!", sslOutputStreamWriter);
                 writeMessage(".", sslOutputStreamWriter);
                 makeRequests("QUIT", sslOutputStreamWriter, sslIn);
@@ -101,7 +101,7 @@ public class SSLClient {
         //(handskakningen skiljer åt lite mellan SSL och TLS)
 
     }
-    
+
     private static void makeRequests(String message, Writer out, BufferedReader in){
         try {
             out.write(message);
