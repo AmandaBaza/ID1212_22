@@ -1,3 +1,6 @@
 
 *.xml
 *.iml
+/Lab4/WebApplication/nbproject/private/
+/Lab4/WebApplication/build/
+/Lab4/WebApplication/dist/
