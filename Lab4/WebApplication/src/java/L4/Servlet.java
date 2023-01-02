@@ -17,18 +17,26 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.concurrent.TimeUnit;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpSession;
+
 @WebServlet(name = "Servlet", urlPatterns = {"/Servlet"})
 public class Servlet extends HttpServlet {
-    
+    //request.getParameter()to dread 
+    //request.getSession()
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) 
-throws IOException{
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
+        // Retrieves the current session, if one doesn't exist it creates it
+        HttpSession session = request.getSession(true);
+        
         out.println("Connecting to DB.");
         try{
             Context initContext = new InitialContext();
             Context envContext  = (Context)initContext.lookup("java:/comp/env");
+            /*
             DataSource ds = (DataSource)envContext.lookup("jdbc/derby");
             Connection conn = ds.getConnection();
             Statement stmt = conn.createStatement();
@@ -37,12 +45,42 @@ throws IOException{
                 out.print(rs.getString("username") + "<br>");
                 out.println(rs.getString("password"));
             }
-        }
+                
+                //if it's new, create ub
+                if(session.isNew()){
+                    String username = request.getParameter("username");
+                    String password = request.getParameter("password");
+                    session.setAttribute("ub", new UserBean(username,password));
+                }
+                //get the ub
+                UserBean ub = (UserBean)session.getAttribute("ub");
+                //Vidare processandet av req o respons objektet sker nu i jsp -sidan 
+                //Detta syns ej i browsern direkt
+                RequestDispatcher rd = request.getRequestDispatcher("Test-jsp.jsp");
+                rd.forward(request, response); 
+            */
+                //if it's a new game, create it
+                if(session.isNew()){
+                    session.setAttribute("game", new Game());
+                }
+                String g = request.getParameter("guess");
+                Integer guess = Integer.parseInt(g);
+                Game game = (Game)session.getAttribute("game");
+                game.newGuess(guess);
+                RequestDispatcher rd = request.getRequestDispatcher("Game.jsp");
+                rd.forward(request, response); 
+                
+            }
         catch(Exception e){
+            out.println("ahhh");
             out.println(e.getMessage());
         }
-out.println("Finished.");
+        
+        out.println("Finished.");
+        
     }
+        
+    
 }
 
 /**
@@ -64,7 +102,7 @@ public class Servlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. 
+            // TODO output your page here. You may use following sample code. 
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
