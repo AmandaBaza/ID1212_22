@@ -32,7 +32,6 @@ public class Servlet extends HttpServlet {
         // Retrieves the current session, if one doesn't exist it creates it
         HttpSession session = request.getSession(true);
         
-        out.println("Connecting to DB.");
         try{
             Context initContext = new InitialContext();
             Context envContext  = (Context)initContext.lookup("java:/comp/env");
@@ -41,23 +40,28 @@ public class Servlet extends HttpServlet {
             Connection conn = ds.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("select * from users");
-            while (rs.next()) {
-                out.print(rs.getString("username") + "<br>");
-                out.println(rs.getString("password"));
-            }
+            Boolean signedIn = false;
                 
-                //if it's new, create ub
-                if(session.isNew()){
-                    String username = request.getParameter("username");
-                    String password = request.getParameter("password");
-                    session.setAttribute("ub", new UserBean(username,password));
-                }
-                //get the ub
-                UserBean ub = (UserBean)session.getAttribute("ub");
-                //Vidare processandet av req o respons objektet sker nu i jsp -sidan 
-                //Detta syns ej i browsern direkt
-                RequestDispatcher rd = request.getRequestDispatcher("Test-jsp.jsp");
-                rd.forward(request, response); 
+                String username = request.getParameter("username");
+                String password = request.getParameter("password");
+           
+                    while (rs.next()) {
+                        if(username.equals(rs.getString("username")) && password.equals(rs.getString("password")) ){
+                            signedIn = true;
+                            session.setAttribute("ub", new UserBean(username,password));
+                            UserBean ub = (UserBean)session.getAttribute("ub");
+
+                            //Vidare processandet av req o respons objektet sker nu i jsp -sidan 
+                            //Detta syns ej i browsern direkt
+                            RequestDispatcher rd = request.getRequestDispatcher("Test-jsp.jsp");
+                            rd.forward(request, response); 
+                            break;
+                        }
+                    }
+                    if(!signedIn){
+                        out.print("WRONG USERNAME OR PASSWORD TRY AGAIN"); 
+                        request.getRequestDispatcher("login.html").include(request, response); 
+                    }
             
                 /* 
                 //if it's a new game, create it
@@ -71,16 +75,11 @@ public class Servlet extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("Game.jsp");
                 rd.forward(request, response); 
                 */
-            }
+        }
         catch(Exception e){
             out.println(e.getMessage());
         }
-        
-        out.println("Finished.");
-        
     }
-        
-    
 }
 
 /**
