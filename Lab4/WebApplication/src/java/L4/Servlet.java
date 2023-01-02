@@ -36,7 +36,7 @@ public class Servlet extends HttpServlet {
         try{
             Context initContext = new InitialContext();
             Context envContext  = (Context)initContext.lookup("java:/comp/env");
-            /*
+            
             DataSource ds = (DataSource)envContext.lookup("jdbc/derby");
             Connection conn = ds.getConnection();
             Statement stmt = conn.createStatement();
@@ -58,7 +58,8 @@ public class Servlet extends HttpServlet {
                 //Detta syns ej i browsern direkt
                 RequestDispatcher rd = request.getRequestDispatcher("Test-jsp.jsp");
                 rd.forward(request, response); 
-            */
+            
+                /* 
                 //if it's a new game, create it
                 if(session.isNew()){
                     session.setAttribute("game", new Game());
@@ -69,10 +70,9 @@ public class Servlet extends HttpServlet {
                 game.newGuess(guess);
                 RequestDispatcher rd = request.getRequestDispatcher("Game.jsp");
                 rd.forward(request, response); 
-                
+                */
             }
         catch(Exception e){
-            out.println("ahhh");
             out.println(e.getMessage());
         }
         
