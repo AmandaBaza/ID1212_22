@@ -13,6 +13,17 @@
     </head>
     <body>
         <h1>Welcome!</h1>
-        Hello <%=ub.getUsername()%>(<%=ub.getPassword()%>)!
+        Hello <%=ub.getUsername()%>(<%=ub.getPassword()%>)!<br/>
+        Your Results:<br/> <%
+            for (int i = 0; i < ub.userResults().size(); i++) {
+                out.println("Subject "+ub.userResults().get(i).getSubject()+ "<br/>");
+                out.println("Score: "+ub.userResults().get(i).getScore()+ "<br/>");
+            }      
+        %>
+        <br/>All Quizzes:<br/> <%
+            for (int i = 0; i < ub.getAllQuizzes().size(); i++) {
+                out.println("<button>"+ ub.getAllQuizzes().get(i)+"</button><br/>");
+            }      
+        %>
     </body>
 </html>

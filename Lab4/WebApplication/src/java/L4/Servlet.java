@@ -33,36 +33,24 @@ public class Servlet extends HttpServlet {
         HttpSession session = request.getSession(true);
         
         try{
-            Context initContext = new InitialContext();
-            Context envContext  = (Context)initContext.lookup("java:/comp/env");
             
-            DataSource ds = (DataSource)envContext.lookup("jdbc/derby");
-            Connection conn = ds.getConnection();
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from users");
             Boolean signedIn = false;
                 
-                String username = request.getParameter("username");
-                String password = request.getParameter("password");
-           
-                    while (rs.next()) {
-                        if(username.equals(rs.getString("username")) && password.equals(rs.getString("password")) ){
-                            signedIn = true;
-                            session.setAttribute("ub", new UserBean(username,password));
-                            UserBean ub = (UserBean)session.getAttribute("ub");
-
-                            //Vidare processandet av req o respons objektet sker nu i jsp -sidan 
-                            //Detta syns ej i browsern direkt
-                            RequestDispatcher rd = request.getRequestDispatcher("Test-jsp.jsp");
-                            rd.forward(request, response); 
-                            break;
-                        }
-                    }
-                    if(!signedIn){
-                        out.print("WRONG USERNAME OR PASSWORD TRY AGAIN"); 
-                        request.getRequestDispatcher("login.html").include(request, response); 
-                    }
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            session.setAttribute("ub", new UserBean(username,password));
+            UserBean ub = (UserBean)session.getAttribute("ub");
             
+            if(ub.getUserExists()){
+                //Vidare processandet av req o respons objektet sker nu i jsp -sidan 
+                //Detta syns ej i browsern direkt
+                RequestDispatcher rd = request.getRequestDispatcher("Test-jsp.jsp");
+                rd.forward(request, response); 
+            }else{
+                out.print("WRONG USERNAME OR PASSWORD TRY AGAIN"); 
+                request.getRequestDispatcher("login.html").include(request, response); 
+            }
+                               
                 /* 
                 //if it's a new game, create it
                 if(session.isNew()){
