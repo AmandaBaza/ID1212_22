@@ -33,35 +33,35 @@ public class Servlet extends HttpServlet {
         HttpSession session = request.getSession(true);
         
         try{
-            Context initContext = new InitialContext();
-            Context envContext  = (Context)initContext.lookup("java:/comp/env");
-            
-            DataSource ds = (DataSource)envContext.lookup("jdbc/derby");
-            Connection conn = ds.getConnection();
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from users");
-            Boolean signedIn = false;
-                
-                String username = request.getParameter("username");
-                String password = request.getParameter("password");
            
-                    while (rs.next()) {
-                        if(username.equals(rs.getString("username")) && password.equals(rs.getString("password")) ){
-                            signedIn = true;
-                            session.setAttribute("ub", new UserBean(username,password));
-                            UserBean ub = (UserBean)session.getAttribute("ub");
-
-                            //Vidare processandet av req o respons objektet sker nu i jsp -sidan 
-                            //Detta syns ej i browsern direkt
-                            RequestDispatcher rd = request.getRequestDispatcher("Test-jsp.jsp");
-                            rd.forward(request, response); 
-                            break;
-                        }
-                    }
-                    if(!signedIn){
-                        out.print("WRONG USERNAME OR PASSWORD TRY AGAIN"); 
-                        request.getRequestDispatcher("login.html").include(request, response); 
-                    }
+            Boolean signedIn = false;
+            
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            session.setAttribute("ub", new UserBean(username,password));
+            UserBean ub = (UserBean)session.getAttribute("ub");
+            
+            
+            if(request.getParameter("quiz") != null){
+                RequestDispatcher rd = request.getRequestDispatcher("Quiz.jsp");
+                rd.forward(request, response);
+            }
+            else if (request.getParameter("question") != null){
+                RequestDispatcher rd = request.getRequestDispatcher("Answears.jsp");
+                rd.forward(request, response);
+            }
+            else if(ub.getUserExists()){
+                //Vidare processandet av req o respons objektet sker nu i jsp -sidan 
+                //Detta syns ej i browsern direkt
+                RequestDispatcher rd = request.getRequestDispatcher("Test-jsp.jsp");
+                rd.forward(request, response); 
+            /*}else if(!request.getParameter("quiz").equals("")){
+                RequestDispatcher rd = request.getRequestDispatcher("Quiz.jsp");
+                rd.forward(request, response);*/
+            }else{
+                out.print("WRONG USERNAME OR PASSWORD TRY AGAIN"); 
+                request.getRequestDispatcher("login.html").include(request, response); 
+            }
             
                 /* 
                 //if it's a new game, create it
@@ -80,6 +80,8 @@ public class Servlet extends HttpServlet {
             out.println(e.getMessage());
         }
     }
+    
+    
 }
 
 /**
@@ -87,7 +89,6 @@ public class Servlet extends HttpServlet {
  * @author Amanda
  
 public class Servlet extends HttpServlet {
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -113,7 +114,6 @@ public class Servlet extends HttpServlet {
             out.println("</html>");
         }
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -128,7 +128,6 @@ public class Servlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -142,7 +141,6 @@ public class Servlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
     /**
      * Returns a short description of the servlet.
      *
@@ -152,5 +150,4 @@ public class Servlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }*/
