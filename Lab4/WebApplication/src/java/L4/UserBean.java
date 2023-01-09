@@ -177,6 +177,11 @@ public class UserBean {
             }
         }catch(Exception e){
             e.printStackTrace();
+        }finally {
+            try {
+		stmt.close();
+		conn.close();
+            } catch (Exception e) {}
         }
 
         return questions;
@@ -201,26 +206,42 @@ public class UserBean {
         }catch(Exception e){
             e.printStackTrace();
         }
+        finally {
+            try {
+		stmt.close();
+		conn.close();
+            } catch (Exception e) {}
+        }
         
         return 0;
     }
     
     public void updateResult(int quizID){
-        //Statement stmt = null;
-        //Connection conn = null;
+        Statement stmt = null;
+        Connection conn = null;
         
         try{
             Context initContext = new InitialContext();
             Context envContext  = (Context)initContext.lookup("java:/comp/env");
 
             DataSource ds = (DataSource)envContext.lookup("jdbc/derby");
-            Connection conn = ds.getConnection();
-            Statement stmt = conn.createStatement();
+            conn = ds.getConnection();
+            stmt = conn.createStatement();
             System.out.println(this.userId + " " + this.username);
-            stmt.executeUpdate("update RESULTS set QUIZ_ID = '" + quizID + "' where USER_ID = '" + this.userId.toString() + "' ");
+            Integer qID = quizID;
+            
+            //String qID = quizID;
+            stmt.executeUpdate("update RESULTS set QUIZ_ID = " + qID + " "
+                    + "where USER_ID = " + this.userId + " ");
             
         }catch(Exception e){
             e.printStackTrace();
+        }
+        finally {
+            try {
+		stmt.close();
+		conn.close();
+            } catch (Exception e) {}
         }
         
     }
@@ -234,12 +255,25 @@ public class UserBean {
             Context envContext  = (Context)initContext.lookup("java:/comp/env");
 
             DataSource ds = (DataSource)envContext.lookup("jdbc/derby");
+            System.out.println("Hej");
             conn = ds.getConnection();
+            System.out.println("Hej");
             stmt = conn.createStatement();
-            stmt.executeUpdate("update RESULTS set SCORE = '" + score + "' where USER_ID = '" + this.userId.toString() + "' ");
+            System.out.println(this.userId + " " + this.username);
+            Integer s = score;
+            
+            //String qID = quizID;
+            stmt.executeUpdate("update RESULTS set SCORE = " + s + " "
+                    + "where USER_ID = " + this.userId + " ");
             
         }catch(Exception e){
             e.printStackTrace();
+        }
+        finally {
+            try {
+		stmt.close();
+		conn.close();
+            } catch (Exception e) {}
         }
         
     }

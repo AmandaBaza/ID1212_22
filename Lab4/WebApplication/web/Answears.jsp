@@ -29,12 +29,13 @@
                 }
                 
             }
-            
+            out.println("<p>Your score is: "+score+"</p>");
             ub.updateScore(score);
             
 
         %>
         
-        <form><input type='submit' value="NewGame"/></form>
+        <!--<a href="/WebApplication/Test-jsp.jsp">New Game</a>-->
+        <!--  <form><input type='submit' value='NewGame' name='gogo'/></form>-->
     </body>
 </html>

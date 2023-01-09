@@ -36,19 +36,24 @@ public class Servlet extends HttpServlet {
            
             Boolean signedIn = false;
             
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
-            session.setAttribute("ub", new UserBean(username,password));
+            
+            if(request.getParameter("username") != null){
+                String username = request.getParameter("username");
+                String password = request.getParameter("password");
+                session.setAttribute("ub", new UserBean(username,password));
+                
+            }
             UserBean ub = (UserBean)session.getAttribute("ub");
             
+            if(ub != null){
             
-            if(request.getParameter("quiz") != null){
-                RequestDispatcher rd = request.getRequestDispatcher("Quiz.jsp");
-                rd.forward(request, response);
-            }
-            else if (request.getParameter("question") != null){
-                RequestDispatcher rd = request.getRequestDispatcher("Answears.jsp");
-                rd.forward(request, response);
+                if(request.getParameter("quiz") != null){
+                    RequestDispatcher rd = request.getRequestDispatcher("Quiz.jsp");
+                    rd.forward(request, response);
+                }
+                else if (request.getParameter("question") != null){
+                    RequestDispatcher rd = request.getRequestDispatcher("Answears.jsp");
+                    rd.forward(request, response);
             }
             else if(ub.getUserExists()){
                 //Vidare processandet av req o respons objektet sker nu i jsp -sidan 
@@ -58,7 +63,9 @@ public class Servlet extends HttpServlet {
             /*}else if(!request.getParameter("quiz").equals("")){
                 RequestDispatcher rd = request.getRequestDispatcher("Quiz.jsp");
                 rd.forward(request, response);*/
-            }else{
+            }
+            }
+            else{
                 out.print("WRONG USERNAME OR PASSWORD TRY AGAIN"); 
                 request.getRequestDispatcher("login.html").include(request, response); 
             }
